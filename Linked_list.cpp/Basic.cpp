@@ -10,6 +10,15 @@ public:
         data = val;
         next = NULL;
     }
+
+    //  Destructor
+    ~Node(){
+        cout << "Node destructor for data " << data << endl;
+        if(next != NULL){
+            delete next;
+            next = NULL;
+        }
+    }
 };
 
 class List{
@@ -20,6 +29,15 @@ public:
     List(){
         head = NULL;
         tail = NULL;
+    }
+
+    //  Destructor
+    ~List(){
+        cout << "List destructor called" << endl;
+        if(head != NULL){
+            delete head;
+            head = NULL;
+        }
     }
 
     void push_front(int val){
@@ -34,6 +52,27 @@ public:
         }
     }
 
+    void push_back(int val){
+        Node* newNode = new Node(val);
+
+        if(head == NULL){
+            head = tail = newNode;
+        }
+        else{
+            tail->next = newNode;
+            tail = newNode;
+        }
+    }
+
+  void insert(int val,int pos){ 
+    Node* newNode=new Node(val); 
+    Node* temp=head; 
+    for(int i=0;i<pos-1;i++)
+    { temp=temp->next; } //temp is now at pos-1 -> prev/left
+     newNode->next=temp->next;
+      temp->next=newNode; 
+    }
+
     void print(){
         Node* temp = head;
         while(temp != NULL){
@@ -45,11 +84,16 @@ public:
 };
 
 int main(){
-    List ll;   
+    List ll;
 
     ll.push_front(10);
-    ll.push_front(4);
-    ll.push_front(180);
+    ll.push_front(20);
+    ll.push_front(30);   // 30->20->10
 
-    ll.print();  // output check
+    ll.push_back(40);
+    ll.push_back(50);    // 30->20->10->40->50
+
+    ll.insert(25, 2);    // 30->20->25->10->40->50
+
+    ll.print();
 }
