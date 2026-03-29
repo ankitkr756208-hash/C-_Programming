@@ -95,6 +95,17 @@ public:
         }
         cout << "NULL\n";
     }
+
+    void pop_back(){
+        Node* temp=head;
+
+        while(temp->next->next !=NULL){
+            temp=temp->next;
+        }
+        temp->next=NULL; //temp is now at second last node
+        delete tail;
+        tail=temp;
+    }
 };
 
 int main(){
@@ -110,6 +121,8 @@ int main(){
     ll.insert(25, 2);    // 30->20->25->10->40->50
 
     ll.pop_front();      // 20->25->10->40->50
+
+    ll.pop_back();       // 20->25->10->40
 
     ll.print();
 }
