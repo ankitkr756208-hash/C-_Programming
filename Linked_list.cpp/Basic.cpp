@@ -87,15 +87,6 @@ public:
         delete temp;
     }
 
-    void print(){
-        Node* temp = head;
-        while(temp != NULL){
-            cout << temp->data << " -> ";
-            temp = temp->next;
-        }
-        cout << "NULL\n";
-    }
-
     void pop_back(){
         Node* temp=head;
 
@@ -105,6 +96,59 @@ public:
         temp->next=NULL; //temp is now at second last node
         delete tail;
         tail=temp;
+    }
+    int search(int key){
+        Node* temp=head;
+        int pos=0;
+        while(temp !=NULL){
+            if(temp->data==key){
+                return pos;
+            }
+            temp=temp->next;
+            pos++;
+        }
+        return -1; //key not found
+    }
+
+    int helper(Node* temp,int key){
+        if(temp==NULL){
+            return -1; //key not found
+        }
+        if(temp->data==key){
+            return 0;
+        }
+        int idx=helper(temp->next,key);
+        if(idx==-1){
+            return -1; //key not found in rest of the list
+        }
+        return idx + 1; //key found in rest of the list, add 1 to account for current node
+    }
+    int searchRec(int key){
+        return helper(head,key);
+    }
+
+    void reverse(){
+        Node* prev=NULL;
+        Node* curr=head;
+
+        while(curr !=NULL){
+            Node* next=curr->next;
+            curr->next=prev;
+
+            //update prev and curr
+            prev=curr;
+            curr=next;
+        }
+        head=prev;
+    }
+
+     void print(){
+        Node* temp = head;
+        while(temp != NULL){
+            cout << temp->data << " -> ";
+            temp = temp->next;
+        }
+        cout << "NULL\n";
     }
 };
 
@@ -123,6 +167,11 @@ int main(){
     ll.pop_front();      // 20->25->10->40->50
 
     ll.pop_back();       // 20->25->10->40
+    ll.print();
+   
+    cout << "Position of 25: " << ll.searchRec(25) << endl; // Should print position of 25
+
+    ll.reverse();        // 40->10->25->20
 
     ll.print();
 }
