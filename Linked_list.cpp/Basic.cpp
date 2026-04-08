@@ -142,6 +142,45 @@ public:
         head=prev;
     }
 
+    int getsize(){
+        int sz=0;
+        Node* temp=head;
+
+        while(temp !=NULL){
+            temp=temp->next;
+            sz++;
+        }
+        return sz;
+    }
+    void removeNth(int n){  //0(n) ;0(1)
+        Node* prev=head;
+        int size=getsize();
+
+        for(int i=1;i<(size-n);i++){
+            prev=prev->next;
+        }
+        Node* toDel=prev->next;
+        cout<<"Deleted Node: "<<toDel->data<<endl;
+         
+        prev->next=prev->next->next;
+    }
+
+    bool isCycle(Node* head){
+        Node* slow=NULL;
+        Node* fast=NULL;
+
+        while(fast !=NULL && fast->next->next !=NULL){
+            slow=slow->next;
+            fast=fast->next->next;
+
+            if(slow==fast){
+                cout<<"Cycle is present at node with data: "<<slow->data<<endl; 
+                return true;
+            }
+        }
+        return false;   
+    }
+
      void print(){
         Node* temp = head;
         while(temp != NULL){
@@ -172,6 +211,9 @@ int main(){
     cout << "Position of 25: " << ll.searchRec(25) << endl; // Should print position of 25
 
     ll.reverse();        // 40->10->25->20
+
+    ll.removeNth(2);      // Removes the 2nd node from the end, which is 25 in this case
+    
 
     ll.print();
 }
