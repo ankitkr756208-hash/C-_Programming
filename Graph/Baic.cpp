@@ -25,6 +25,39 @@ public:
             cout<<endl;
         }
     }
+
+    // cycle detection in undirected graph using dfs
+    bool isCycleUndirect(int src,int par,vector<bool> &vis){ // dfs algo
+        vis[src]=true;
+        list<int>neigh=l[src];
+        for(int v:neigh){
+            if(!vis[v]){
+                if(isCycleUndirect(v,src,vis)){
+                    return true;
+                }
+            }
+            else if(v!=par){
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    bool isCycle(){
+        vector<bool>vis(v,false);
+
+        for(int i=0;i<v;i++){
+            if(!vis[i]){
+                if(isCycleUndirect(i,-1,vis)){
+                    cout<<"cycle is present in the graph"<<endl;
+                    return true;
+                }
+            }
+        }
+        return false;
+
+    }
 };
 
 
@@ -38,5 +71,6 @@ int main(){
     g.addEdge(2,3);
 
     g.printAdjList();
+    g.isCycle();
     
 }
