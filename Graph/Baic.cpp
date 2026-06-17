@@ -1,6 +1,8 @@
 #include<iostream>
 #include<vector>
 #include<list>
+#include <queue>
+
 using namespace std;
 
 class Graph{
@@ -58,6 +60,46 @@ public:
         return false;
 
     }
+
+    // cycle detection in undirected graph using bfs
+    bool isCycleBFS(int src,vector<bool> &vis){ 
+        queue<pair<int,int>> q; // {node,parent}
+        q.push({src,-1});
+        vis[src]=true;
+
+        while(!q.empty()){
+            int node=q.front().first;
+            int par=q.front().second;
+            q.pop();
+
+            for(int neigh:l[node]){
+                if(!vis[neigh]){
+                    vis[neigh]=true;
+                    q.push({neigh,node});
+                }
+                else if(neigh!=par){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+     bool isCycleBFS(){
+        vector<bool>vis(v,false);
+
+        for(int i=0;i<v;i++){
+            if(!vis[i]){
+                if(isCycleBFS(i,vis)){
+                    cout<<"cycle is present in the graph"<<endl;
+                    return true;
+                }
+            }
+        }
+        return false;
+
+     } 
+
 };
 
 
@@ -72,5 +114,10 @@ int main(){
 
     g.printAdjList();
     g.isCycle();
+
+     if (g.isCycleBFS())
+        cout << "Cycle is present in the graph\n";
+    else
+        cout << "Cycle is not present in the graph\n";
     
 }
