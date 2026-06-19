@@ -2,6 +2,7 @@
 #include<vector>
 #include<list>
 #include <queue>
+#include <stack>
 
 using namespace std;
 
@@ -100,6 +101,47 @@ public:
 
      } 
 
+     // topological sort using  stack bfs
+     void topoHelper(int node,
+                vector<bool>& vis,
+                stack<int>& st){
+
+    vis[node] = true;
+
+    for(int neigh : l[node]){
+
+        if(!vis[neigh]){
+            topoHelper(neigh, vis, st);
+        }
+    }
+
+    st.push(node);
+}
+
+void topoSort(){
+
+    vector<bool> vis(v,false);
+    stack<int> st;
+
+    for(int i=0;i<v;i++){
+
+        if(!vis[i]){
+            topoHelper(i,vis,st);
+        }
+    }
+
+    cout<<"Topological Order : ";
+
+    while(!st.empty()){
+
+        cout<<st.top()<<" ";
+        st.pop();
+    }
+
+    cout<<endl;
+}
+
+
 };
 
 
@@ -119,5 +161,7 @@ int main(){
         cout << "Cycle is present in the graph\n";
     else
         cout << "Cycle is not present in the graph\n";
+
+    g.topoSort();
     
 }
